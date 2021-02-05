@@ -4,6 +4,7 @@ int yPos = 200;
 int l = 3;
 int score = 0;
 int scale = 20;
+int difficulty = 15;
 
 char dir = 'n';
 
@@ -33,7 +34,8 @@ void setup() {
    yCoords.add(new Integer(yPos));
    yCoords.add(new Integer(yPos));
    
-   frameRate(15);
+   //Bestä?mmer hur snabbt spelet ska gå? (svå?righetsgrad)
+   frameRate(difficulty);
 }
 
 //Ritar ut sjä?lva spelet med alla funktioner nedan
@@ -106,11 +108,20 @@ void keyPressed(){
 
 
 //Funktion som kä?nner av vilka fall som spelet fö?rloras
-void losingCases(){
+void losingCaseWall(){
   if(xCoords.get(0) >= 600 || xCoords.get(0) <= 0 - scale || yCoords.get(0) >= 600 || yCoords.get(0) <= 0 - scale){
     lose();
   }
-  //orm nuddar sig själv
+}
+
+void losingCaseSelf(){
+  for(int i = l - 1; i > 1; i--){
+    int headPosX = xCoords.get(0);
+    int headPosY = yCoords.get(0);
+    if(headPosX == xCoords.get(i) && headPosY == yCoords.get(i)){
+       lose();
+    }
+  }
 }
 
 
@@ -126,5 +137,6 @@ void lose(){
 void game(){
   player();
   f.show();
-  losingCases();
+  losingCaseWall();
+  losingCaseSelf();
 }
